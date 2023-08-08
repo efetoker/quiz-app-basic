@@ -16,12 +16,12 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+body{
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.main{
+  max-width: calc(100vh / (16 / 9));
+  border-right: 1px solid #FF6A66;
+  border-left: 1px solid #FF6A66;
 }
