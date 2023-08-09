@@ -70,10 +70,14 @@ const Questions = () => {
   useEffect(() => {
     if (answeredQuestions === totalQuestions) {
       const timeUsedPercentage = (totalUsedTime / totalMaxTime) * 100;
+      let correctlyAnswered = 0;
+      givenAnswers.forEach((answer) => {
+        const question: any = randomizedQuestions.find((question) => question.question === answer.question);
+        if (question.answer === answer.answer) {
+          correctlyAnswered++;
+        }
+      });
 
-      const correctlyAnswered = givenAnswers.filter(
-        (answer: any) => answer.answer === answer.question.answer
-      ).length;
       const correctPercentage = (correctlyAnswered / totalQuestions) * 100;
 
       router.push(

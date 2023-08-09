@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import bgPic from '../public/images/bg.png';
@@ -10,8 +10,24 @@ import "../app/globals.css";
 
 const Home = () => {
   const router = useRouter();
+  
+  useEffect(() => {
+    router.push(
+      {
+        pathname: "/final",
+        query: {
+          timeUsedPercentage: 50,
+          correctlyAnswered: 4,
+          correctPercentage: 80,
+        },
+      },
+      "/",
+      { shallow: true }
+    );
+  }, []);
 
   return (
+    
     <main className="flex min-h-screen flex-col main py-10 px-6 mx-auto relative overflow-hidden slide-in-bck-center">
       <Image src={bgPic} alt="bg" className="absolute max-w-full h-auto bottom-16 left-8 z-auto" />
 
@@ -41,6 +57,6 @@ const Home = () => {
       <Button text="Let's Get Started" onClick={() => router.push('/countdown', '/')} />
     </main>
   );
-};
+}
 
 export default Home;
