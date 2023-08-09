@@ -1,28 +1,35 @@
+import PageTitle from "@/components/pageTitle";
+import Head from "next/head";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const CountdownPage = () => {
-  const [countdown, setCountdown] = useState(60); // Initial countdown value in seconds
-  const [questionIndex, setQuestionIndex] = useState(0); // Index to track the current question
+  const router = useRouter();
+  const [countdown, setCountdown] = useState(5); 
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown((prevCountdown) => prevCountdown - 1);
-    }, 1000); // Decrease countdown by 1 second every second
-
-    // When the countdown reaches 0, move to the next question
-    if (countdown === 0) {
-      setQuestionIndex((prevIndex) => prevIndex + 1);
-      setCountdown(60); // Reset countdown to 60 seconds for the next question
-    }
-
+    }, 1000);
+  
     return () => clearInterval(timer);
   }, [countdown]);
 
   return (
-    <div>
-      <h1>Countdown Screen</h1>
-      <p>Time left: {countdown} seconds</p>
-    </div>
+    <main className="flex min-h-screen flex-col items-center py-10 px-6 mx-auto relative overflow-hidden bg-[#FE6A67]">
+      <Head>
+          <title>Quiz app</title>
+          <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap" rel="stylesheet"></link>
+      </Head>
+
+      <PageTitle isWhite={true}></PageTitle>
+
+      <div className="mb-20 mt-32 text-white text-bold text-4xl margin-auto text-center">Your quiz starts in</div>
+
+      <div onClick={(e) => {countdown < 1 ? router.push("/questions") : false}} className={`cursor-default width-auto text-white ${countdown < 1 ? 'text-7xl px-16 py-20' : 'px-16 py-8 text-9xl'} font-bold rounded-full border-8 leading-none border-white`}>
+        { countdown < 1 ? 'GO' : countdown}
+      </div>
+    </main>
   );
 };
 
