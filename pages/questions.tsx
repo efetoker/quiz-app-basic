@@ -1,41 +1,53 @@
 import React, { useState, useEffect } from "react";
 import questions from "../data/questions";
 import { useRouter } from "next/router";
+import Question from "@/components/question";
+import Head from "next/head";
+import PageTitle from "@/components/pageTitle";
 
 export default function Questions() {
   const router = useRouter();
 
+  const totalQuestionTime = 60;
+  const totalQuestions = questions.length;
+  const totalMaxTime = totalQuestionTime * totalQuestions; 
+
   const [selectedOption, setSelectedOption] = useState("");
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(60);
   const [answeredQuestions, setAnsweredQuestions] = useState(0);
   const [givenAnswers, setGivenAnswers] = useState<{ question: string; answer: string }[]>([]);
-  const [startTime, setStartTime] = useState(Date.now()); // Record start time
+  
+  const [totalUsedTime, setTotalUsedTime] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(60);
 
   const handleOptionSelect = (option: any) => {
       setSelectedOption(option);
   };
 
   const handleSubmitAnswer = () => {
-    if(answeredQuestions === 5) {
+    if (answeredQuestions === totalQuestions) {
       return;
     }
 
     const correctAnswer = questions[questionIndex].answer;
     setAnsweredQuestions((prevAnswered) => prevAnswered + 1);
-
+  
+    const userAnswer = { question: questions[questionIndex].question, answer: selectedOption };
+    setGivenAnswers((prevAnswers) => [...prevAnswers, userAnswer]);
+  
+    const timeUsedForThisQuestion = totalQuestionTime - timeLeft;
+    setTotalUsedTime((prevTotalUsedTime) => prevTotalUsedTime + timeUsedForThisQuestion);
+  
     setQuestionIndex((prevIndex) => prevIndex + 1);
     setSelectedOption("");
     setTimeLeft(60);
-
-    const userAnswer = { question: questions[questionIndex].question, answer: selectedOption };
-    setGivenAnswers((prevAnswers) => [...prevAnswers, userAnswer]);
   };
 
   useEffect(() => {
     const timer = setInterval(() => {
       if (timeLeft > 0) {
         setTimeLeft((prevTime) => prevTime - 1);
+        setTotalUsedTime((prevTotalUsedTime) => prevTotalUsedTime + 1);
       } else {
         handleSubmitAnswer();
       }
@@ -47,54 +59,43 @@ export default function Questions() {
   }, [timeLeft]);
 
   useEffect(() => {
-    if (answeredQuestions === 5) {
-      
-    const totalQuestions = 5; // Total number of questions
-    const totalQuestionTime = 60; // seconds per question
-    const totalMaxTime = totalQuestionTime * totalQuestions; // Total allowed time for all questions
-
-    const endTime = Date.now(); // Record end time
-    const timeUsedInSeconds = Math.floor((endTime - startTime) / 1000);
-    const timeUsedPercentage = (timeUsedInSeconds / totalMaxTime) * 100;
-
-    const correctlyAnswered = givenAnswers.filter((answer: any) => answer.answer === questions[givenAnswers.indexOf(answer)].answer).length;
-    const correctPercentage = (correctlyAnswered / totalQuestions) * 100;
-
-    console.log("Time Used Percentage:", timeUsedPercentage.toFixed(0));
-    console.log("Correctly Answered:", correctlyAnswered);
-    console.log("Correct Percentage:", correctPercentage.toFixed(0));
-
-    router.push({
-      pathname: "/final",
-      query: {
-        timeUsedPercentage: timeUsedPercentage.toFixed(0),
-        correctlyAnswered,
-        correctPercentage: correctPercentage.toFixed(0),
-      },
-    }, "/", { shallow: true });
-
+    if (answeredQuestions === totalQuestions) {
+      const timeUsedPercentage = (totalUsedTime / totalMaxTime) * 100;
+  
+      const correctlyAnswered = givenAnswers.filter(
+        (answer) => answer.answer === questions[givenAnswers.indexOf(answer)].answer
+      ).length;
+      const correctPercentage = (correctlyAnswered / totalQuestions) * 100;
+  
+      router.push({
+        pathname: "/final",
+        query: {
+          timeUsedPercentage: timeUsedPercentage.toFixed(0),
+          correctlyAnswered,
+          correctPercentage: correctPercentage.toFixed(0),
+        },
+      }, "/", { shallow: true });
+  
     } else if (questionIndex < questions.length) {
       setTimeLeft(60);
     }
-  }, [answeredQuestions, givenAnswers, startTime]);
+  }, [answeredQuestions, givenAnswers, totalUsedTime]);
 
   return (
     <div>
         {answeredQuestions === 5 ? (
           <div></div>
         ) : (
-        <div>
-          <p>{questions[questionIndex].question}</p>
-          <ul>
-            {questions[questionIndex].options.map((option, index) => (
-              <li key={index} onClick={() => handleOptionSelect(option)}>
-                {option}
-              </li>
-            ))}
-          </ul>
-          <p>Time left: {timeLeft} seconds</p>
-          <button onClick={handleSubmitAnswer}>Submit Answer</button>
-        </div>
+          <main className="flex min-h-screen flex-col main py-4 px-6 mx-auto relative overflow-hidden">
+            <Head>
+              <title>Quiz app</title>
+              <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap" rel="stylesheet"></link>
+            </Head>
+
+            <PageTitle isSmall={true}></PageTitle>
+
+            <Question totalPercentage={ (totalUsedTime / totalMaxTime) * 100 } timePassed={totalUsedTime} totalTime={totalMaxTime} question={questions[questionIndex]} questionIndex={questionIndex} />
+          </main>
         )}
     </div>
   );
