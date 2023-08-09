@@ -4,24 +4,27 @@ import { useRouter } from "next/router";
 import Question from "@/components/question";
 import Head from "next/head";
 import PageTitle from "@/components/pageTitle";
+import { NextButton } from "@/components/nextButton";
+
+const totalQuestionTime = 60;
+const totalQuestions = questions.length;
+const totalMaxTime = totalQuestionTime * totalQuestions;
 
 export default function Questions() {
   const router = useRouter();
 
-  const totalQuestionTime = 60;
-  const totalQuestions = questions.length;
-  const totalMaxTime = totalQuestionTime * totalQuestions; 
-
   const [selectedOption, setSelectedOption] = useState("");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState(0);
-  const [givenAnswers, setGivenAnswers] = useState<{ question: string; answer: string }[]>([]);
-  
-  const [totalUsedTime, setTotalUsedTime] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [givenAnswers, setGivenAnswers] = useState<
+    { question: string; answer: string }[]
+  >([]);
 
-  const handleOptionSelect = (option: any) => {
-      setSelectedOption(option);
+  const [totalUsedTime, setTotalUsedTime] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(totalQuestionTime);
+
+  const handleOptionSelect = (value: string) => {
+    setSelectedOption(value);
   };
 
   const handleSubmitAnswer = () => {
@@ -31,16 +34,19 @@ export default function Questions() {
 
     const correctAnswer = questions[questionIndex].answer;
     setAnsweredQuestions((prevAnswered) => prevAnswered + 1);
-  
-    const userAnswer = { question: questions[questionIndex].question, answer: selectedOption };
+
+    const userAnswer = {
+      question: questions[questionIndex].question,
+      answer: selectedOption,
+    };
     setGivenAnswers((prevAnswers) => [...prevAnswers, userAnswer]);
-  
+
     const timeUsedForThisQuestion = totalQuestionTime - timeLeft;
     setTotalUsedTime((prevTotalUsedTime) => prevTotalUsedTime + timeUsedForThisQuestion);
-  
+
     setQuestionIndex((prevIndex) => prevIndex + 1);
     setSelectedOption("");
-    setTimeLeft(60);
+    setTimeLeft(totalQuestionTime);
   };
 
   useEffect(() => {
@@ -61,42 +67,58 @@ export default function Questions() {
   useEffect(() => {
     if (answeredQuestions === totalQuestions) {
       const timeUsedPercentage = (totalUsedTime / totalMaxTime) * 100;
-  
+
       const correctlyAnswered = givenAnswers.filter(
         (answer) => answer.answer === questions[givenAnswers.indexOf(answer)].answer
       ).length;
       const correctPercentage = (correctlyAnswered / totalQuestions) * 100;
-  
-      router.push({
-        pathname: "/final",
-        query: {
-          timeUsedPercentage: timeUsedPercentage.toFixed(0),
-          correctlyAnswered,
-          correctPercentage: correctPercentage.toFixed(0),
+
+      router.push(
+        {
+          pathname: "/final",
+          query: {
+            timeUsedPercentage: timeUsedPercentage.toFixed(0),
+            correctlyAnswered,
+            correctPercentage: correctPercentage.toFixed(0),
+          },
         },
-      }, "/", { shallow: true });
-  
+        "/",
+        { shallow: true }
+      );
     } else if (questionIndex < questions.length) {
-      setTimeLeft(60);
+      setTimeLeft(totalQuestionTime);
     }
   }, [answeredQuestions, givenAnswers, totalUsedTime]);
 
   return (
     <div>
-        {answeredQuestions === 5 ? (
-          <div></div>
-        ) : (
-          <main className="flex min-h-screen flex-col main py-4 px-6 mx-auto relative overflow-hidden">
-            <Head>
-              <title>Quiz app</title>
-              <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap" rel="stylesheet"></link>
-            </Head>
+      {answeredQuestions === totalQuestions ? (
+        <div></div>
+      ) : (
+        <main className="flex min-h-screen flex-col main py-4 px-6 mx-auto relative overflow-hidden">
+          <Head>
+            <title>Quiz app</title>
+            <link
+              href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap"
+              rel="stylesheet"
+            ></link>
+          </Head>
 
-            <PageTitle isSmall={true}></PageTitle>
+          <PageTitle isSmall={true}></PageTitle>
 
-            <Question totalPercentage={ (totalUsedTime / totalMaxTime) * 100 } timePassed={totalUsedTime} totalTime={totalMaxTime} question={questions[questionIndex]} questionIndex={questionIndex} />
-          </main>
-        )}
+          <Question
+            selectedOption={selectedOption}
+            setSelectedOption={handleOptionSelect}
+            totalPercentage={(totalUsedTime / totalMaxTime) * 100}
+            timePassed={totalUsedTime}
+            totalTime={totalMaxTime}
+            question={questions[questionIndex]}
+            questionIndex={questionIndex}
+          />
+
+          <NextButton text="Next" disabled={selectedOption === undefined || selectedOption === null || selectedOption === ''} onClick={handleSubmitAnswer}></NextButton>
+        </main>
+      )}
     </div>
   );
-};
+}

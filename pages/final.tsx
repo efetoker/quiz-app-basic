@@ -2,32 +2,39 @@ import React from "react";
 import { useLocation } from "react-router-dom"; // Assuming you're using React Router
 import questions from "../data/questions"; // Import the questions data
 import { useRouter } from "next/router";
+import Head from "next/head";
+import PageTitle from "@/components/pageTitle";
+import { AgainButton } from "@/components/againButton";
+import cupPic from '../public/images/cup.png'
+import Image from "next/image";
 
 const FinalPage = () => {
   const router = useRouter();
   const { timeUsedPercentage, correctlyAnswered, correctPercentage } = router.query;
 
   return (
-    <main className="flex min-h-screen flex-col items-center py-2 px-4 mx-auto relative overflow-hidden bg-[#FE6A67]">
-      <div className="mb-8 mt-32 text-white text-bold text-2xl margin-auto text-center">Your quiz is finished!</div>
+    <main className="flex min-h-screen flex-col items-center py-4 px-6 mx-auto relative overflow-hidden bg-[#FE6A67]">
+      <Head>
+        <title>Quiz app</title>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap"
+          rel="stylesheet"
+        ></link>
+      </Head>
 
-      <div className="mb-8 text-white text-bold text-2xl margin-auto text-center">You answered {correctlyAnswered} out of 5 questions correctly.</div>
+      <PageTitle isSmall={true} isWhite={true}></PageTitle>  
 
-      <div className="mb-8 text-white text-bold text-2xl margin-auto text-center">You used {timeUsedPercentage}% of the total time.</div>
+      <div className={`flex flex-col main w-full flex-grow flex-1 bg-white rounded-xl px-8 pt-12 pb-4 my-4`}>
 
-      <div className="mb-8 text-white text-bold text-2xl margin-auto text-center">You scored {correctPercentage}%.</div>
-
-      <div className="mb-8 text-white text-bold text-2xl margin-auto text-center">The correct answers were:</div>
-
-      <div className="mb-8 text-white text-bold text-2xl margin-auto text-center">
-        {questions.map((question, index) => (
-          <div key={index}>
-            {question.question} - {question.answer}
-          </div>
-        ))}
       </div>
 
-      <div className="mb-8 text-white text-bold text-2xl margin-auto text-center">Thanks for playing!</div>
+      <AgainButton
+        text="Try again"
+        disabled={false}
+        onClick={() => {
+          router.push("/");
+        }}
+      ></AgainButton>
     </main>
   );
 };
