@@ -47,7 +47,7 @@ const Question = ({
 
   return question ? (
     <div>
-      <div className={`border rounded-xl border-silver px-3 py-8 mt-8 mb-2 text-center ${animate ? 'slide-in-bck-center' : ''}`}>
+      <div className={`border rounded-xl border-silver px-3 py-8 mt-4 mb-2 text-center ${animate ? 'slide-in-bck-center' : ''}`}>
         <div className="font-semibold text-lg mb-4">
           Question {questionIndex + 1} / 5
         </div>
@@ -84,7 +84,7 @@ const Question = ({
           onClick={setSelectedOptionCustom(option)}
         >
           <div
-            className={`flex cursor-pointer flex-row justify-start w-100 py-6 px-6 items-center text-xl ${
+            className={`flex cursor-pointer flex-row justify-start w-100 py-4 px-6 items-center text-lg ${
               selectedOption === option
                 ? " font-normal text-[#374CB7]"
                 : " font-light"
