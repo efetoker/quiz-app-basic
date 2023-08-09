@@ -4,6 +4,8 @@ import Head from "next/head"
 import "../app/globals.css";
 import Image from 'next/image'
 import bgPic from '../public/images/bg.png'
+import { Button } from "@/components/button";
+import Tick from "@/components/tick";
 
 export const metadata: Metadata = {
   title: 'Quiz App',
@@ -18,14 +20,28 @@ export default function Home() {
           <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap" rel="stylesheet"></link>
         </Head>
 
+        <Image src={bgPic} alt="bg" className="absolute max-w-full h-auto bottom-16 left-8 z-auto" />
+
         <PageTitle></PageTitle>
 
-        <div className="flex flex-col items-center justify-center w-full text-4xl font-bold mt-20 mb-8 z-10">
+        <div className="flex flex-col items-center justify-center w-full text-3xl font-bold mt-12 mb-8 z-10">
           Things to know before you start:
         </div>
 
-        <Image src={bgPic} alt="bg" className="w-full h-full absolute max-w-full h-auto bottom-40 left-8 z-auto" />
+        <div className="flex flex-col items-start justify-center w-full text-xl font-normal mb-8 z-10">
+          <div className="flex flex-row justify-start items-start mb-4">
+            <Tick></Tick>
+            <div className="ml-3 text-gray-600 font-light leading-tight text-base">In each quiz, you are required to answer 5 questions.</div>
+          </div>
 
+          <div className="flex flex-row justify-start items-start mt-3">
+            <Tick></Tick>
+            <div className="ml-3 text-gray-600 font-light leading-tight text-base">You will have 3 minutes for each question. If you fail to compete a question in given time, your answer will be considered incorrect.</div>
+          </div>
+        </div>
+
+
+        <Button text="Let's Get Started" onClick={() => {}}></Button>
     </main>
   )
 }
