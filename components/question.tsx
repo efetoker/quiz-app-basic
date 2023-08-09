@@ -47,7 +47,7 @@ const Question = ({
 
   return question ? (
     <div>
-      <div className={`border rounded-xl border-silver px-3 py-8 mt-8 mb-2 text-center`}>
+      <div className={`border rounded-xl border-silver px-3 py-8 mt-8 mb-2 text-center ${animate ? 'slide-in-bck-center' : ''}`}>
         <div className="font-semibold text-lg mb-4">
           Question {questionIndex + 1} / 5
         </div>
