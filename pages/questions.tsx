@@ -5,6 +5,7 @@ import PageTitle from '@/components/pageTitle';
 import Question from '@/components/question';
 import { NextButton } from '@/components/nextButton';
 import Head from 'next/head';
+import "../app/globals.css";
 
 const totalQuestionTime = 60;
 const totalQuestions = questions.length;

@@ -115,7 +115,7 @@ const FinalPage = () => {
         text="Try again"
         disabled={false}
         onClick={() => {
-          router.push("/quiz-app");
+          router.push("/");
         }}
       ></AgainButton>
     </main>

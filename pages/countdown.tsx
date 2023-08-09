@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import PageTitle from '@/components/pageTitle';
 import Head from 'next/head';
+import "../app/globals.css";
 
 const Countdown = () => {
   const router = useRouter();
