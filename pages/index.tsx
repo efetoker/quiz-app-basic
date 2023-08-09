@@ -39,7 +39,7 @@ export default function Home() {
 
 
         <Button text="Let's Get Started" onClick={() => {
-          router.push('/countdown')
+          router.push('/countdown', '/')
         }}></Button>
     </main>
   )

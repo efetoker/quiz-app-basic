@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-const CountdownPage = () => {
+export default function Countdown() {
   const router = useRouter();
   const [countdown, setCountdown] = useState(5); 
 
@@ -26,11 +26,9 @@ const CountdownPage = () => {
 
       <div className="mb-20 mt-32 text-white text-bold text-4xl margin-auto text-center">Your quiz starts in</div>
 
-      <div onClick={(e) => {countdown < 1 ? router.push("/questions") : false}} className={`cursor-default width-auto text-white ${countdown < 1 ? 'text-7xl px-16 py-20' : 'px-16 py-8 text-9xl'} font-bold rounded-full border-8 leading-none border-white`}>
+      <div onClick={(e) => {countdown < 1 ? router.push("/questions", '/') : false}} className={`cursor-default width-auto text-white ${countdown < 1 ? 'text-7xl px-16 py-20' : 'px-16 py-8 text-9xl'} font-bold rounded-full border-8 leading-none border-white`}>
         { countdown < 1 ? 'GO' : countdown}
       </div>
     </main>
   );
 };
-
-export default CountdownPage;

@@ -23,6 +23,12 @@ const questions = [
         options: ["PNG", "PDF", "TXT", "DOC"],
         answer: "PNG"
     },
+    {
+        id: 5,
+        question: "Which technology is used to track the location of a mobile device?",
+        options: ["GPS", "NFC", "Wi-Fi", "Bluetooth"],
+        answer: "Bluetooth"
+    }
   ];
   
   export default questions;
