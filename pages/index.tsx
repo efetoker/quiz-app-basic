@@ -10,21 +10,6 @@ import "../app/globals.css";
 
 const Home = () => {
   const router = useRouter();
-  
-  useEffect(() => {
-    router.push(
-      {
-        pathname: "/final",
-        query: {
-          timeUsedPercentage: 50,
-          correctlyAnswered: 4,
-          correctPercentage: 80,
-        },
-      },
-      "/",
-      { shallow: true }
-    );
-  }, []);
 
   return (
     
