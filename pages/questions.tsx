@@ -10,36 +10,39 @@ const totalQuestionTime = 60;
 const totalQuestions = questions.length;
 const totalMaxTime = totalQuestionTime * totalQuestions;
 
+function shuffleArray(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+
 const Questions = () => {
-  
   const router = useRouter();
 
+  const [randomizedQuestions, setRandomizedQuestions] = useState(questions);
   const [selectedOption, setSelectedOption] = useState("");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState(0);
-  const [givenAnswers, setGivenAnswers] = useState<
-    { question: string; answer: string }[]
-  >([]);
+
+  const [givenAnswers, setGivenAnswers] = useState<{ question: string; answer: string }[]>([]);
 
   const [totalUsedTime, setTotalUsedTime] = useState(0);
   const [timeLeft, setTimeLeft] = useState(totalQuestionTime);
 
-  const handleOptionSelect = (value: string) => {
+  const handleOptionSelect = (value: any) => {
     setSelectedOption(value);
   };
 
   const handleSubmitAnswer = () => {
-    if (answeredQuestions === totalQuestions) {
-      return;
-    }
-
-    const correctAnswer = questions[questionIndex].answer;
-    setAnsweredQuestions((prevAnswered) => prevAnswered + 1);
-
     const userAnswer = {
-      question: questions[questionIndex].question,
+      question: randomizedQuestions[questionIndex].question,
       answer: selectedOption,
     };
+
+    setAnsweredQuestions((prevAnswered) => prevAnswered + 1);
     setGivenAnswers((prevAnswers) => [...prevAnswers, userAnswer]);
 
     const timeUsedForThisQuestion = totalQuestionTime - timeLeft;
@@ -50,27 +53,26 @@ const Questions = () => {
     setTimeLeft(totalQuestionTime);
   };
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (timeLeft > 0) {
-        setTimeLeft((prevTime) => prevTime - 1);
-        setTotalUsedTime((prevTotalUsedTime) => prevTotalUsedTime + 1);
-      } else {
+  const handleTimerTick = () => {
+    if (timeLeft > 0) {
+      setTimeLeft((prevTime) => prevTime - 1);
+      setTotalUsedTime((prevTotalUsedTime) => prevTotalUsedTime + 1);
+    } else {
+      if (selectedOption !== "") {
         handleSubmitAnswer();
+      } else {
+        setQuestionIndex((prevIndex) => prevIndex + 1);
+        setTimeLeft(totalQuestionTime);
       }
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [timeLeft]);
+    }
+  };
 
   useEffect(() => {
     if (answeredQuestions === totalQuestions) {
       const timeUsedPercentage = (totalUsedTime / totalMaxTime) * 100;
 
       const correctlyAnswered = givenAnswers.filter(
-        (answer) => answer.answer === questions[givenAnswers.indexOf(answer)].answer
+        (answer: any) => answer.answer === answer.question.answer
       ).length;
       const correctPercentage = (correctlyAnswered / totalQuestions) * 100;
 
@@ -86,26 +88,46 @@ const Questions = () => {
         "/",
         { shallow: true }
       );
-    } else if (questionIndex < questions.length) {
+    } else if (questionIndex < totalQuestions) {
       setTimeLeft(totalQuestionTime);
     }
-  }, [answeredQuestions, givenAnswers, totalUsedTime]);
+  }, [answeredQuestions, questionIndex, givenAnswers, totalUsedTime]);
+
+  useEffect(() => {
+    const timer = setInterval(handleTimerTick, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [timeLeft, questionIndex]);
+
+  useEffect(() => {
+    const shuffledQuestions = shuffleArray([...questions]);
+    setQuestionIndex(0);
+    setSelectedOption("");
+    setAnsweredQuestions(0);
+    setGivenAnswers([]);
+    setTotalUsedTime(0);
+    setTimeLeft(totalQuestionTime);
+    
+    setRandomizedQuestions(shuffledQuestions);
+  }, []);
+
+  const currentQuestion = randomizedQuestions[questionIndex];
 
   return (
-    <main className="flex min-h-screen flex-col main py-4 px-6 mx-auto relative overflow-hidden">
-      {answeredQuestions === totalQuestions ? (
-        <div></div>
-      ) : (
+    <main className="flex min-h-screen flex-col main py-4 px-6 mx-auto relative overflow-hidden slide-in-bck-center">
+      {questionIndex < totalQuestions && (
         <div>
           <Head>
             <title>Quiz app</title>
             <link
               href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap"
               rel="stylesheet"
-            ></link>
+            />
           </Head>
 
-          <PageTitle isSmall={true}></PageTitle>
+          <PageTitle isSmall={true} />
 
           <Question
             selectedOption={selectedOption}
@@ -113,11 +135,15 @@ const Questions = () => {
             totalPercentage={(totalUsedTime / totalMaxTime) * 100}
             timePassed={totalUsedTime}
             totalTime={totalMaxTime}
-            question={questions[questionIndex]}
+            question={currentQuestion}
             questionIndex={questionIndex}
           />
 
-          <NextButton text="Next" disabled={selectedOption === undefined || selectedOption === null || selectedOption === ''} onClick={handleSubmitAnswer}></NextButton>
+          <NextButton
+            text="Next"
+            disabled={!selectedOption}
+            onClick={handleSubmitAnswer}
+          />
         </div>
       )}
     </main>

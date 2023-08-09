@@ -9,7 +9,7 @@ const FinalPage = () => {
   const router = useRouter();
 
   return (
-    <main className="flex min-h-screen flex-col items-center py-4 px-6 mx-auto relative overflow-hidden bg-[#FE6A67]">
+    <main className="flex min-h-screen flex-col items-center py-4 px-6 mx-auto relative overflow-hidden bg-[#FE6A67] slide-in-bck-center">
       <Head>
         <title>Quiz app</title>
         <link

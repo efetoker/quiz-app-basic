@@ -24,7 +24,7 @@ const Countdown = () => {
   }, [countdown]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center py-10 px-6 mx-auto relative overflow-hidden bg-[#FE6A67]">
+    <main className="flex min-h-screen flex-col items-center py-10 px-6 mx-auto relative overflow-hidden bg-[#FE6A67] slide-in-bck-center">
       <Head>
         <title>Quiz app</title>
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap" rel="stylesheet" />

@@ -12,7 +12,7 @@ const Home = () => {
   const router = useRouter();
 
   return (
-    <main className="flex min-h-screen flex-col main py-10 px-6 mx-auto relative overflow-hidden">
+    <main className="flex min-h-screen flex-col main py-10 px-6 mx-auto relative overflow-hidden slide-in-bck-center">
       <Image src={bgPic} alt="bg" className="absolute max-w-full h-auto bottom-16 left-8 z-auto" />
 
       <Head>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const convertSecondsToMinutes = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -32,9 +32,22 @@ const Question = ({
     setSelectedOption(value);
   };
 
+  const [animate, setAnimate] = React.useState(false);
+
+  useEffect(() => {
+    setAnimate(true);
+
+    const animationDuration = 700; // Adjust as needed
+    const timeoutId = setTimeout(() => {
+      setAnimate(false);
+    }, animationDuration);
+
+    return () => clearTimeout(timeoutId); // Clean up the timeout
+  }, [questionIndex]);
+
   return question ? (
     <div>
-      <div className="border rounded-xl border-silver px-3 py-8 mt-8 mb-2 text-center">
+      <div className={`border rounded-xl border-silver px-3 py-8 mt-8 mb-2 text-center`}>
         <div className="font-semibold text-lg mb-4">
           Question {questionIndex + 1} / 5
         </div>
@@ -67,7 +80,7 @@ const Question = ({
             selectedOption === option
               ? "border-[#374CB7]"
               : " border-silver"
-          }  rounded-xl mb-2 text-center select-none`}
+          }  rounded-xl mb-2 text-center select-none ${animate ? 'slide-in-elliptic-top-fwd' : ''}`}
           onClick={setSelectedOptionCustom(option)}
         >
           <div
@@ -100,7 +113,7 @@ const Question = ({
                 outline: "none",
               }}
             />
-            <label htmlFor={`option-${index}`}>{option}</label>
+            <label htmlFor={`option-${index}`} className={`${animate ? 'invisible' : ''}`}>{option}</label>
           </div>
         </div>
       ))}
