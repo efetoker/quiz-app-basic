@@ -37,7 +37,7 @@ const Question = ({
   useEffect(() => {
     setAnimate(true);
 
-    const animationDuration = 700; // Adjust as needed
+    const animationDuration = 1000; // Adjust as needed
     const timeoutId = setTimeout(() => {
       setAnimate(false);
     }, animationDuration);
@@ -113,7 +113,7 @@ const Question = ({
                 outline: "none",
               }}
             />
-            <label htmlFor={`option-${index}`} className={`${animate ? 'invisible' : ''}`}>{option}</label>
+            <label htmlFor={`option-${index}`}>{option}</label>
           </div>
         </div>
       ))}
