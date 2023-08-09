@@ -92,11 +92,11 @@ const Questions = () => {
   }, [answeredQuestions, givenAnswers, totalUsedTime]);
 
   return (
-    <div>
+    <main className="flex min-h-screen flex-col main py-4 px-6 mx-auto relative overflow-hidden">
       {answeredQuestions === totalQuestions ? (
         <div></div>
       ) : (
-        <main className="flex min-h-screen flex-col main py-4 px-6 mx-auto relative overflow-hidden">
+        <div>
           <Head>
             <title>Quiz app</title>
             <link
@@ -118,9 +118,9 @@ const Questions = () => {
           />
 
           <NextButton text="Next" disabled={selectedOption === undefined || selectedOption === null || selectedOption === ''} onClick={handleSubmitAnswer}></NextButton>
-        </main>
+        </div>
       )}
-    </div>
+    </main>
   );
 };
 
