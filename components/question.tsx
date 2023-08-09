@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const convertSecondsToMinutes = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -7,17 +7,7 @@ const convertSecondsToMinutes = (seconds: number) => {
   return `${minutes}:${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
 };
 
-interface QuestionProps {
-  question: { question: string; options: string[]; answer: string } | undefined;
-  questionIndex: number;
-  timePassed: number;
-  selectedOption: string;
-  setSelectedOption: (value: string) => void;
-  totalTime: number;
-  totalPercentage: number;
-}
-
-const Question: React.FC<QuestionProps> = ({
+const Question = ({
   question,
   questionIndex,
   timePassed,
@@ -25,6 +15,18 @@ const Question: React.FC<QuestionProps> = ({
   setSelectedOption,
   totalTime,
   totalPercentage,
+} : {
+  question: {
+    question: string;
+    options: string[];
+    answer: string;
+  };
+  questionIndex: number;
+  timePassed: number;
+  selectedOption: string;
+  setSelectedOption: (value: string) => void;
+  totalTime: number;
+  totalPercentage: number;
 }) => {
   const setSelectedOptionCustom = (value: string) => () => {
     setSelectedOption(value);
@@ -32,7 +34,7 @@ const Question: React.FC<QuestionProps> = ({
 
   return question ? (
     <div>
-      <div className="border rounded-xl border-silver px-3 py-6 mt-8 mb-2 text-center">
+      <div className="border rounded-xl border-silver px-3 py-8 mt-8 mb-2 text-center">
         <div className="font-semibold text-lg mb-4">
           Question {questionIndex + 1} / 5
         </div>
@@ -55,7 +57,7 @@ const Question: React.FC<QuestionProps> = ({
           </div>
         </div>
 
-        <div className="font-semibold text-lg">{question.question}</div>
+        <div className="font-semibold text-xl mt-8">{question.question}</div>
       </div>
 
       {question.options.map((option, index) => (
@@ -65,11 +67,11 @@ const Question: React.FC<QuestionProps> = ({
             selectedOption === option
               ? "border-[#374CB7]"
               : " border-silver"
-          }  rounded-xl mb-2 text-center`}
+          }  rounded-xl mb-2 text-center select-none`}
           onClick={setSelectedOptionCustom(option)}
         >
           <div
-            className={`flex flex-row justify-start w-100 py-6 px-6 items-center text-xl ${
+            className={`flex cursor-pointer flex-row justify-start w-100 py-6 px-6 items-center text-xl ${
               selectedOption === option
                 ? " font-normal text-[#374CB7]"
                 : " font-light"

@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import questions from "../data/questions";
-import { useRouter } from "next/router";
-import Question from "@/components/question";
-import Head from "next/head";
-import PageTitle from "@/components/pageTitle";
-import { NextButton } from "@/components/nextButton";
+import React, { useState, useEffect } from 'react';
+import questions from '../data/questions';
+import { useRouter } from 'next/router';
+import PageTitle from '@/components/pageTitle';
+import Question from '@/components/question';
+import { NextButton } from '@/components/nextButton';
+import Head from 'next/head';
 
 const totalQuestionTime = 60;
 const totalQuestions = questions.length;
 const totalMaxTime = totalQuestionTime * totalQuestions;
 
-export default function Questions() {
+const Questions = () => {
+  
   const router = useRouter();
 
   const [selectedOption, setSelectedOption] = useState("");
@@ -121,4 +122,6 @@ export default function Questions() {
       )}
     </div>
   );
-}
+};
+
+export default Questions;
