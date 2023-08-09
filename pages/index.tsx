@@ -7,8 +7,6 @@ import { Button } from '@/components/button';
 import Tick from '@/components/tick';
 import Head from 'next/head';
 import "../app/globals.css";
-import CupSvg from '@/components/cup-svg';
-import { Chart } from 'chart.js';
 
 const Home = () => {
   const router = useRouter();
@@ -20,15 +18,9 @@ const Home = () => {
       <Head>
         <title>Quiz app</title>
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       </Head>
 
       <PageTitle />
-
-      <div className="shadow-lg rounded-lg overflow-hidden">
-        <div className="py-3 px-5 bg-gray-50">Pie chart</div>
-        <canvas className="p-1 ml-40 mr-40" id="chartPie"></canvas>
-      </div>
 
       <div className="flex flex-col items-center justify-center w-full text-3xl font-bold mt-12 mb-8 z-10">
           Things to know before you start:
