@@ -19,7 +19,7 @@ const Countdown = () => {
   useEffect(() => {
     if (countdown < 1) {
       setTimeout(() => {
-        router.push('/questions', '/');
+        router.push('/questions', "/");
       }, 1000);
     }
   }, [countdown]);

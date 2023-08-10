@@ -39,7 +39,7 @@ const Home = () => {
           </div>
         </div>
 
-      <Button text="Let's Get Started" onClick={() => router.push('/countdown', '/')} />
+      <Button text="Let's Get Started" onClick={() => router.push('/countdown', "/")} />
     </main>
   );
 }

@@ -90,7 +90,7 @@ const Questions = () => {
             correctPercentage: correctPercentage.toFixed(0),
           },
         },
-        "/quiz-app",
+        "/",
         { shallow: true }
       );
     } else if (questionIndex < totalQuestions) {
